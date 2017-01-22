@@ -40,17 +40,17 @@ error_val = zeros(length(lambda_vec), 1);
 %
 
 
-for i=1:length(lambda_vec)
-    initial_theta = zeros(size(X, 2), 1); 
+for i=1:m
+    initial_theta = zeros(size(X(1:i,:), 2), 1); 
     % Create "short hand" for the cost function to be minimized
-    costFunction = @(t) linearRegCostFunction(X, y, t, lambda_vec(i));
+    costFunction = @(t) linearRegCostFunction(X(1:i,:), y(1:i), t, lambda);
     % Now, costFunction is a function that takes in only one argument
     options = optimset('MaxIter', 200, 'GradObj', 'on');
     % Minimize using fmincg
     theta = fmincg(costFunction, initial_theta, options);
     
-    error_train(i)= linearRegCostFunction(X, y, theta,0);
-    error_val(i)= linearRegCostFunction(Xval, yval, theta,0);
+    error_train(i)= linearRegCostFunction(X(1:i,:), y(1:i), theta, 0);
+    error_val(i)= linearRegCostFunction(Xval, yval, theta, 0);
 end
 
 
